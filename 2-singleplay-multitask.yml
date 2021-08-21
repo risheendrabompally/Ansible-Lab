@@ -1,0 +1,15 @@
+---
+- name: Update web servers
+  hosts: web
+
+  tasks:
+  - name: Ensure web-dir is created
+    file:
+      path: /home/centos/web-directory
+      state: directory
+
+  - name: Ensure file is downloaded
+    get_url:
+      url: https://filesamples.com/samples/document/txt/sample3.txt 
+      dest: /home/centos
+...
