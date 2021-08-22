@@ -1,0 +1,32 @@
+---
+- name: Update app servers
+  hosts: app
+  become: yes
+
+  tasks:
+  - name: Ensure apache is installed
+    yum:
+      name: httpd
+      state: installed
+
+  - name: Ensure apache is started
+    service:
+      name: httpd
+      state: started
+
+  - name: Ensure apache is enabled
+    service:
+      name: httpd
+      enabled: yes
+
+  - name: Ensure git is installed
+    yum:
+      name: git
+      state: installed
+
+  - name: Ensure food is started
+    git:
+      repo: https://github.com/ravi2krishna/food.git
+      dest: /var/www/html/
+
+...

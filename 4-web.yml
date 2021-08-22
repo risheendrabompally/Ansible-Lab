@@ -1,0 +1,22 @@
+---
+- name: Update web servers
+  hosts: web
+  become: yes
+
+  tasks:
+  - name: Ensure Apache is installed
+    yum:
+      name: httpd
+      state: installed
+
+  - name: Ensure Apache is started
+    service:
+      name: httpd
+      state: started
+
+  - name: Ensure Apache is enabled
+    service:
+      name: httpd
+      enabled: yes
+
+...
