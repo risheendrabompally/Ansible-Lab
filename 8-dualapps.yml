@@ -1,0 +1,83 @@
+---
+- name: Update n3 server with two applications
+  hosts: n3
+  become: yes
+  vars:
+    http_port1: 80
+    http_port2: 8888
+
+  tasks:
+
+  - name: SELinux permissive
+    selinux:
+      policy: targeted
+      state: permissive
+
+  - name: Ensure httpd is installed
+    yum:
+      name: httpd
+      state: installed
+
+  - name: Ensure httpd is started
+    service:
+      name: httpd
+      state: started
+
+  - name: Ensure httpd is enabled
+    service:
+      name: httpd
+      enabled: yes
+
+  - name: Ensure git is installed
+    yum:
+      name: git
+      state: installed
+
+  - name: Creating ecomm directory
+    file:
+      path: /home/centos/ecomm
+      state: directory
+
+  - name: Clone myntra app
+    git:
+      repo: https://github.com/ravi2krishna/ecomm.git
+      dest: /home/centos/ecomm
+
+  - name: Creating food directory
+    file:
+      path: /home/centos/food
+      state: directory
+
+  - name: Clone food app
+    git:
+      repo: https://github.com/ravi2krishna/food.git
+      dest: /home/centos/food
+
+  - name: copy myntra app to html path
+    copy:
+      src: /home/centos/ecomm
+      dest: /var/www/html/
+      remote_src: yes
+
+  - name: copy food app to html path
+    copy:
+      src: /home/centos/food
+      dest: /var/www/html/
+      remote_src: yes
+
+  - name: SELinux permissive
+    selinux:
+      policy: targeted
+      state: permissive
+
+  - name: copy config file
+    template:
+      src: ~/httpd.j2
+      dest: /etc/httpd/conf/httpd.conf
+
+  - name: Restart apache
+    service:
+      name: httpd
+      state: restarted
+
+...

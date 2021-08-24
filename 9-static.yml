@@ -1,0 +1,13 @@
+---
+- name: Update n3 server with two applications
+  hosts: n3
+  become: yes
+
+  tasks:
+
+  - name: copy static html file
+    copy:
+      src: static.html
+      dest: /var/www/html/food/static.html
+
+...

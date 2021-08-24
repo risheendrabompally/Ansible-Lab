@@ -1,0 +1,15 @@
+---
+- name: Update n3 server with two applications
+  hosts: n3
+  become: yes
+  vars:
+    user1: risheendra
+
+  tasks:
+
+  - name: copy static html file
+    template:
+      src: dynamic.j2
+      dest: /var/www/html/food/dynamic.html
+
+...
